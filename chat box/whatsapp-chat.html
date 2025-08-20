@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <title>Havron Switchgears Chatbot</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; }
+
+    /* Floating WhatsApp Icon */
+    .chat-icon {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #25D366;
+      color: white;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 30px;
+      cursor: pointer;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+      z-index: 999;
+      pointer-events: auto;
+    }
+
+    /* Chat Popup Box */
+   .chat-box {
+  position: absolute; /* Changed from absolute */
+  bottom: 90px;
+  right: 20px;
+  width: 300px;
+  background-color: #fefefe;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  display: none;
+  flex-direction: column;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+  overflow: hidden;
+  z-index: 999;
+  animation: fadeIn 0.4s;
+}
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .chat-header {
+      background-color: #25D366;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .chat-body {
+      padding: 10px;
+      height: 250px;
+      overflow-y: auto;
+    }
+
+    .chat-input {
+      display: flex;
+      border-top: 1px solid #ddd;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      outline: none;
+    }
+
+    .chat-input button {
+      background-color: #25D366;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    .bot, .user {
+      margin: 6px 0;
+      padding: 8px;
+      border-radius: 8px;
+      max-width: 80%;
+      clear: both;
+    }
+
+    .bot {
+      background-color: #eee;
+      float: left;
+    }
+
+    .user {
+      background-color: #DCF8C6;
+      float: right;
+    }
+
+    .option-buttons {
+      margin-top: 10px;
+    }
+
+    .option-buttons button {
+      margin: 3px;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 20px;
+      background-color: #25D366;
+      color: white;
+      cursor: pointer;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Chat Icon -->
+<div class="chat-icon" onclick="toggleChat()"><i class="fab fa-whatsapp"></i></div>
+
+<!-- Chat Box -->
+<div class="chat-box" id="chatBox">
+  <div class="chat-header">Havron Assistant</div>
+  <div class="chat-body" id="chatBody">
+    <div class="bot">Hi! Welcome to Havron Switchgears 👋<br>How can I help you today?</div>
+    <div class="option-buttons">
+      <button onclick="userOption('Location')">📍 Location</button>
+      <button onclick="userOption('Products')">📦 Products</button>
+      <button onclick="userOption('Contact')">☎️ Contact</button>
+    </div>
+  </div>
+  <div class="chat-input">
+    <input type="text" id="userInput" placeholder="Type a message..." onkeydown="handleEnter(event)">
+    <button onclick="sendMessage()">➤</button>
+  </div>
+</div>
+
+<script>
+  function toggleChat() {
+    const box = document.getElementById("chatBox");
+    box.style.display = box.style.display === "flex" ? "none" : "flex";
+  }
+
+  function handleEnter(e) {
+    if (e.key === "Enter") sendMessage();
+  }
+
+  function sendMessage() {
+    const input = document.getElementById("userInput");
+    const msg = input.value.trim();
+    if (!msg) return;
+    appendMessage('user', msg);
+    input.value = "";
+    replyBot(msg.toLowerCase());
+  }
+
+  function appendMessage(sender, text) {
+    const div = document.createElement("div");
+    div.className = sender;
+    div.innerText = text;
+    document.getElementById("chatBody").appendChild(div);
+    document.getElementById("chatBody").scrollTop = document.getElementById("chatBody").scrollHeight;
+  }
+
+  function replyBot(msg) {
+    if (msg.includes("location")) {
+      appendMessage("bot", "📍 You can find our branches here:\n👉 <a href='/branches.html'>/branches.html</a>");
+    } else if (msg.includes("product")) {
+      appendMessage("bot", "📦 Check our products:\n👉 <a href='/products.html'>/products.html</a>");
+    } else if (msg.includes("contact") || msg.includes("call")) {
+      appendMessage("bot", "☎️ Contact us at: +91-9876543210\n📧 Email: info@havron.com");
+    } else {
+      appendMessage("bot", "❓ Sorry, I didn’t get that. Please choose from Location, Products, or Contact.");
+    }
+  }
+
+  function userOption(option) {
+    appendMessage('user', option);
+    replyBot(option.toLowerCase());
+  }
+</script>
+
+</body>
+</html>

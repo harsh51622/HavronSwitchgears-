@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Certificates & Awards Timeline</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .timeline {
+      position: relative;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .timeline::after {
+      content: '';
+      position: absolute;
+      width: 6px;
+      background-color: #007bff;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      margin-left: -3px;
+    }
+
+    .container {
+      padding: 20px 40px;
+      position: relative;
+      background-color: inherit;
+      width: 50%;
+    }
+
+    .container img {
+      width: 100%;
+      border-radius: 8px;
+    }
+
+    .content {
+      padding: 20px;
+      background-color: white;
+      position: relative;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .content:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    }
+
+    /* Left side */
+    .left {
+      left: 0;
+    }
+
+    /* Right side */
+    .right {
+      left: 50%;
+    }
+
+    .left::before, .right::before {
+      content: " ";
+      height: 0;
+      position: absolute;
+      top: 22px;
+      width: 0;
+      z-index: 1;
+      border: medium solid #007bff;
+    }
+
+    .left::before {
+      right: -15px;
+      border-width: 10px 0 10px 15px;
+      border-color: transparent transparent transparent #007bff;
+    }
+
+    .right::before {
+      left: -15px;
+      border-width: 10px 15px 10px 0;
+      border-color: transparent #007bff transparent transparent;
+    }
+
+    /* Responsive */
+    @media screen and (max-width: 768px) {
+      .timeline::after {
+        left: 30px;
+      }
+
+      .container {
+        width: 100%;
+        padding-left: 70px;
+        padding-right: 25px;
+      }
+
+      .container::before {
+        left: 60px;
+        border: medium solid #007bff;
+        border-width: 10px 10px 10px 0;
+        border-color: transparent #007bff transparent transparent;
+      }
+
+      .right {
+        left: 0%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h2 style="text-align:center; color:#007bff;">🏆 Our Certificates & Awards</h2>
+
+  <div class="timeline">
+
+    <div class="container left">
+      <div class="content">
+        <img src="https://via.placeholder.com/300x150" alt="Award 2016">
+        <h3>2016</h3>
+        <p>Received ISO Certification for quality standards in manufacturing.</p>
+      </div>
+    </div>
+
+    <div class="container right">
+      <div class="content">
+        <img src="https://via.placeholder.com/300x150" alt="Award 2018">
+        <h3>2018</h3>
+        <p>Honored with National Excellence Award for innovation in electric goods.</p>
+      </div>
+    </div>
+
+    <div class="container left">
+      <div class="content">
+        <img src="https://via.placeholder.com/300x150" alt="Award 2020">
+        <h3>2020</h3>
+        <p>Certified as Best Supplier of the Year by major industry leaders.</p>
+      </div>
+    </div>
+
+    <div class="container right">
+      <div class="content">
+        <img src="https://via.placeholder.com/300x150" alt="Award 2022">
+        <h3>2022</h3>
+        <p>Awarded for achieving 1 million satisfied customers milestone.</p>
+      </div>
+    </div>
+
+    <div class="container left">
+      <div class="content">
+        <img src="https://via.placeholder.com/300x150" alt="Award 2023">
+        <h3>2023</h3>
+        <p>Recognized internationally for our sustainable business practices.</p>
+      </div>
+    </div>
+
+    <div class="container right">
+      <div class="content">
+        <img src="https://via.placeholder.com/300x150" alt="Award 2025">
+        <h3>2025</h3>
+        <p>Received Global Leadership Award for innovation & growth.</p>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
