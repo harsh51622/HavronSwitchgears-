@@ -212,7 +212,7 @@ function opendropdown()
       box.classList.toggle('active');
     });
 
- fetch("/HEADER/header.html")
+ fetch("HEADER/header.html")
  .then(res => res.text())
  .then(data => {
   document.getElementById("header").innerHTML = data;

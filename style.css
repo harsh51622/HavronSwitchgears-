@@ -679,7 +679,7 @@ body.dark .products h1 {
 }
 
 .headadvertising {
-  background-image: url('/IMAGES/hands.png');
+  background-image: url('IMAGES/hands.png');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -1378,7 +1378,7 @@ height: 100%;
   }
 
   .headadvertising {
-    background-image: url('/IMAGES/hands.png');
+    background-image: url('IMAGES/hands.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
