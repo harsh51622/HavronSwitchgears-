@@ -413,13 +413,13 @@ margin: 50px;
       }
     }
 
-       .timeline {
+       .timelines {
       position: relative;
       max-width: 1000px;
       margin: auto;
     }
 
-    .timeline::after {
+    .timelines::after {
       content: '';
       position: absolute;
       width: 6px;
@@ -431,7 +431,7 @@ margin: 50px;
     }
 
     .containerawards {
-      padding: 20px 40px;
+   
       position: relative;
       background-color: inherit;
       width: 50%;
@@ -452,6 +452,14 @@ margin: 50px;
       
     }
 
+    content h3{
+      font-size: 33px;
+    }
+
+    .content p{
+      font-size: 20px;
+    }
+
     .content:hover {
       transform: scale(1.05);
       box-shadow: 0 8px 20px rgba(0,0,0,0.25);
@@ -460,11 +468,13 @@ margin: 50px;
     /* Left side */
     .left {
       left: 0;
+        padding: 20px 40px;
     }
 
     /* Right side */
     .right {
       left: 50%;
+        padding: 20px 40px;
     }
 
     .left::before, .right::before {
@@ -808,11 +818,7 @@ flex-wrap: wrap;
         left: 30px;
       }
 
-      .containerawards {
-        width: 100%;
-        padding-left: 70px;
-        padding-right: 25px;
-      }
+ 
 
       .container::before {
         left: 60px;
@@ -858,4 +864,61 @@ flex-wrap: wrap;
          min-width: 280px;
       max-width: 300px;
       }
+         .content {
+      padding: 20px;
+      background-color: white;
+      position: relative;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      transition: transform 0.3s, box-shadow 0.3s;
+   
+      
+    }
+
+      content h3{
+      font-size: 23px;
+    }
+
+    .content p{
+      font-size: 10px;
+    }
+      .left {
+      left: 0;
+        padding: 20px 30px;
+    }
+
+    /* Right side */
+    .right {
+      left: 50%;
+        padding: 20px 33px;
+    }
+     .containerawards {
+     
+      position: relative;
+      background-color: inherit;
+      width: 50%;
+    }
+
+        .left::before, .right::before {
+      content: " ";
+      height: 0;
+      position: absolute;
+      top: 22px;
+      width: 0;
+      z-index: 1;
+      border: medium solid #007bff;
+    
+    }
+     .left::before {
+     right: 8px;
+        border-width: 9px 0 10px 15px;
+        border-color: transparent transparent transparent #007bff;
+    }
+    
+
+    .right::before {
+      left: 8px;
+      border-width: 10px 15px 10px 0;
+      border-color: transparent #007bff transparent transparent;
+    }
 }

@@ -1,189 +1,367 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <title>Havron Switchgears Chatbot</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: Arial, sans-serif; }
 
-    /* Floating WhatsApp Icon */
-    .chat-icon {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background-color: #25D366;
-      color: white;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 30px;
-      cursor: pointer;
-      box-shadow: 0 5px 10px rgba(0,0,0,0.2);
-      z-index: 999;
-      pointer-events: auto;
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WhatsApp Enquiry Widget</title>
+  <style>
+    :root {
+      --brand: #25D366;
+      /* WhatsApp Green */
+      --brand-2: #128C7E;
+      /* Darker WhatsApp */
+      --bg: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --shadow: 0 12px 30px rgba(0, 0, 0, .18), 0 4px 12px rgba(0, 0, 0, .10);
+      --radius: 20px;
     }
 
-    /* Chat Popup Box */
-   .chat-box {
-  position: absolute; /* Changed from absolute */
-  bottom: 90px;
-  right: 20px;
-  width: 300px;
-  background-color: #fefefe;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  display: none;
-  flex-direction: column;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-  overflow: hidden;
-  z-index: 999;
-  animation: fadeIn 0.4s;
-}
+    /* FAB */
+    .chat-fab {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      z-index: 2;
+      /* default low */
+      transition: transform .15s ease, box-shadow .2s ease;
+    }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    .chat-fab img {
+      width: 28px;
+      height: 28px;
+      filter: invert(1);
+    }
+
+    .chat-fab:active {
+      transform: scale(.96);
+    }
+
+    /* Panel */
+    .chat-panel {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      width: 360px;
+      height: 520px;
+      background: var(--bg);
+      color: var(--text);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      display: none;
+      overflow: hidden;
+      z-index: 1;
+      /* 🔹 default low */
+    }
+
+    @media (max-width: 480px) {
+      .chat-panel {
+        width: 92vw;
+        height: 70vh;
+        right: 4vw;
+        bottom: 16px;
+      }
     }
 
     .chat-header {
-      background-color: #25D366;
-      color: white;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color: #fff;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .chat-header .title {
+      font-weight: 700;
+    }
+
+    .chat-tabs {
+      display: flex;
+      gap: 6px;
       padding: 10px;
+      background: #f8fafc;
+      border-bottom: 1px solid #eef2f7;
+    }
+
+    .chat-tab {
+      flex: 1;
       text-align: center;
-      font-weight: bold;
+      padding: 8px 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      color: #334155;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+    }
+
+    .chat-tab.active {
+      background: #dcf8c6;
+      border-color: #25D366;
+      color: #075e54;
     }
 
     .chat-body {
-      padding: 10px;
-      height: 210px;
-      overflow-y: auto;
-    }
-
-    .chat-input {
+      height: calc(100% - 56px - 54px);
       display: flex;
-      border-top: 1px solid #ddd;
     }
 
-    .chat-input input {
+    .pane {
       flex: 1;
-      padding: 8px;
-      border: none;
-      outline: none;
+      display: none;
+      height: 100%;
     }
 
-    .chat-input button {
-      background-color: #25D366;
-      color: white;
-      border: none;
-      padding: 8px 12px;
-      cursor: pointer;
+    .pane.active {
+      display: flex;
+      flex-direction: column;
     }
 
-    .bot, .user {
-      margin: 6px 0;
-      padding: 8px;
-      border-radius: 8px;
-      max-width: 80%;
-      clear: both;
+    /* Messages */
+    .messages {
+      flex: 1;
+      overflow: auto;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: #ece5dd;
+    }
+
+    .msg {
+      max-width: 82%;
+      padding: 10px 12px;
+      border-radius: 14px;
+      font-size: 14px;
     }
 
     .bot {
-      background-color: #eee;
-      float: left;
+      background: #fff;
+      align-self: flex-start;
     }
 
-    .user {
-      background-color: #DCF8C6;
-      float: right;
+    .you {
+      background: #dcf8c6;
+      align-self: flex-end;
     }
 
-    .option-buttons {
-      margin-top: 10px;
+    /* Input */
+    .input-bar {
+      border-top: 1px solid #eef2f7;
+      background: #fff;
+      padding: 10px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
     }
 
-    .option-buttons button {
-      margin: 3px;
-      padding: 5px 10px;
+    .input-bar input {
+      flex: 1;
+      height: 40px;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 0 12px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .btn {
+      height: 40px;
+      padding: 0 14px;
       border: none;
-      border-radius: 20px;
-      background-color: #25D366;
-      color: white;
+      border-radius: 12px;
+      background: var(--brand);
+      color: #fff;
+      font-weight: 700;
       cursor: pointer;
-      font-size: 13px;
+    }
+
+    /* Form */
+    .form {
+      flex: 1;
+      overflow: auto;
+      padding: 12px;
+      background: #ece5dd;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .grid .full {
+      grid-column: 1/-1;
+    }
+
+    label {
+      font-size: 12px;
+      margin: 6px 2px;
+      display: block;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 10px 12px;
+      outline: none;
+      background: #fff;
+      font-size: 14px;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
     }
   </style>
 </head>
+
 <body>
 
-<!-- Chat Icon -->
-<div class="chat-icon" onclick="toggleChat()"><i class="fab fa-whatsapp"></i></div>
+  <!-- FAB -->
+  <div id="chatFab" class="chat-fab" title="WhatsApp Enquiry">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA">
+  </div>
 
-<!-- Chat Box -->
-<div class="chat-box" id="chatBox">
-  <div class="chat-header">Havron Assistant</div>
-  <div class="chat-body" id="chatBody">
-    <div class="bot">Hi! Welcome to Havron Switchgears 👋<br>How can I help you today?</div>
-    <div class="option-buttons">
-      <button onclick="userOption('Location')">📍 Location</button>
-      <button onclick="userOption('Products')">📦 Products</button>
-      <button onclick="userOption('Contact')">☎️ Contact</button>
+  <!-- Panel -->
+  <section id="chatPanel" class="chat-panel">
+    <header class="chat-header">
+      <div class="title">WhatsApp Enquiry</div>
+      <button id="closeBtn" style="all:unset;cursor:pointer;color:#fff;font-size:18px;">✕</button>
+    </header>
+
+    <div class="chat-tabs">
+      <div class="chat-tab active" data-tab="t-chat">Chat</div>
+      <div class="chat-tab" data-tab="t-form">Enquiry</div>
     </div>
-  </div>
-  <div class="chat-input">
-    <input type="text" id="userInput" placeholder="Type a message..." onkeydown="handleEnter(event)">
-    <button onclick="sendMessage()">➤</button>
-  </div>
-</div>
 
-<script>
-  function toggleChat() {
-    const box = document.getElementById("chatBox");
-    box.style.display = box.style.display === "flex" ? "none" : "flex";
-  }
+    <div class="chat-body">
+      <!-- CHAT -->
+      <div id="t-chat" class="pane active">
+        <div id="messages" class="messages">
+          <div class="msg bot">👋 Hi! Aap enquiry form bhi bhar sakte ho niche.</div>
+        </div>
+        <div class="input-bar">
+          <input id="userInput" type="text" placeholder="Type here…" />
+          <button id="sendBtn" class="btn">Send</button>
+        </div>
+      </div>
 
-  function handleEnter(e) {
-    if (e.key === "Enter") sendMessage();
-  }
+      <!-- FORM -->
+      <div id="t-form" class="pane">
+        <form id="enquiryForm" class="form">
+          <div class="grid">
+            <div>
+              <label for="name">Name</label>
+              <input id="name" name="name" required />
+            </div>
+            <div>
+              <label for="phone">Phone</label>
+              <input id="phone" name="phone" required />
+            </div>
+            <div>
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" />
+            </div>
+            <div>
+              <label for="product">Product</label>
+              <select id="product" name="product" required>
+                <option value="">Choose…</option>
+                <option>Switchgear Panel</option>
+                <option>Cable Tray</option>
+                <option>MCB / MCCB</option>
+                <option>Custom Order</option>
+              </select>
+            </div>
+            <div class="full">
+              <label for="message">Other Query</label>
+              <textarea id="message" name="message"></textarea>
+            </div>
+          </div>
+          <div style="margin-top:10px; text-align:right;">
+            <button type="submit" class="btn">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
 
-  function sendMessage() {
+  <script>
+    const fab = document.getElementById("chatFab");
+    const panel = document.getElementById("chatPanel");
+    const closeBtn = document.getElementById("closeBtn");
+    const tabs = document.querySelectorAll(".chat-tab");
+    const panes = document.querySelectorAll(".pane");
+    const messages = document.getElementById("messages");
     const input = document.getElementById("userInput");
-    const msg = input.value.trim();
-    if (!msg) return;
-    appendMessage('user', msg);
-    input.value = "";
-    replyBot(msg.toLowerCase());
-  }
+    const sendBtn = document.getElementById("sendBtn");
+    const enquiryForm = document.getElementById("enquiryForm");
 
-  function appendMessage(sender, text) {
-    const div = document.createElement("div");
-    div.className = sender;
-    div.innerText = text;
-    document.getElementById("chatBody").appendChild(div);
-    document.getElementById("chatBody").scrollTop = document.getElementById("chatBody").scrollHeight;
-  }
+    // 🔹 FAB click -> panel open with high z-index
+    fab.onclick = () => {
+      fab.style.display = "none";
+      panel.style.display = "block";
+      panel.style.zIndex = "99999999999";
+      panel.style.height="400px"
+    };
 
-  function replyBot(msg) {
-    if (msg.includes("location")) {
-      appendMessage("bot", "📍 You can find our branches here:\n👉 <a href='/branches.html'>/branches.html</a>");
-    } else if (msg.includes("product")) {
-      appendMessage("bot", "📦 Check our products:\n👉 <a href='/products.html'>/products.html</a>");
-    } else if (msg.includes("contact") || msg.includes("call")) {
-      appendMessage("bot", "☎️ Contact us at: +91-9876543210\n📧 Email: info@havron.com");
-    } else {
-      appendMessage("bot", "❓ Sorry, I didn’t get that. Please choose from Location, Products, or Contact.");
+    // 🔹 Close button -> panel hide with low z-index
+    closeBtn.onclick = () => {
+      panel.style.display = "none";
+      panel.style.zIndex = "1";
+      fab.style.display = "flex";
+        panel.style.height="0px"
+    };
+
+    function setTab(id) {
+      tabs.forEach(t => t.classList.toggle("active", t.dataset.tab === id));
+      panes.forEach(p => p.classList.toggle("active", p.id === id));
     }
-  }
+    tabs.forEach(t => t.onclick = () => setTab(t.dataset.tab));
 
-  function userOption(option) {
-    appendMessage('user', option);
-    replyBot(option.toLowerCase());
-  }
-</script>
+    function appendMsg(txt, who = "bot") {
+      const div = document.createElement("div");
+      div.className = "msg " + who;
+      div.textContent = txt;
+      messages.appendChild(div);
+      messages.scrollTop = messages.scrollHeight;
+    }
+    sendBtn.onclick = () => {
+      const val = input.value.trim();
+      if (!val) return;
+      appendMsg(val, "you");
+      appendMsg("✅ Got it! For details, please fill enquiry form.", "bot");
+      input.value = "";
+    };
 
+    enquiryForm.onsubmit = async (e) => {
+      e.preventDefault();
+      const data = new FormData(enquiryForm);
+      const res = await fetch("http://127.0.0.1:5000/submit", { method: "POST", body: data });
+      const out = await res.json();
+      if (out.status === "ok") {
+        setTab("t-chat");
+        appendMsg("📩 Enquiry saved successfully!", "bot");
+        enquiryForm.reset();
+      } else {
+        appendMsg("❌ Error: " + out.msg, "bot");
+      }
+    };
+  </script>
 </body>
+
 </html>

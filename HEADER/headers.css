@@ -24,7 +24,7 @@ body.dark {
 
   position: fixed;
   top: 0;
-  z-index:9999;
+  z-index:99999999;
   box-shadow: 0 10px 16px rgba(0, 0, 0, 0.2);
   width: 100%;
 

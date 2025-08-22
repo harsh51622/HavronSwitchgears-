@@ -6,7 +6,8 @@
 
 
 .page{
-  margin-top:80px
+  margin-top:80px;
+   z-index: 999;
 }
 
 
@@ -23,11 +24,11 @@
   }
   .products img {
     width: 400px;
-    height: 270px;
+    height: 330px;
     object-fit: cover;
     border: 1px solid #ccc;
     border-radius: 10px;
-    background-color: aqua;
+    background-color: white;
  margin-top: 20px;
     
   }
@@ -36,9 +37,9 @@
   
   .itemsbackground{
     width: 440px;
-    height: 360px;
+    height: 420px;
     background-color:rgb(183, 183, 183);
-
+overflow:hidden;
     text-align: center; 
 }
 

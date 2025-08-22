@@ -9,10 +9,10 @@ function toggleTheme() {
 
 
   if (darkMode) {
-    img.src = 'LOGo/new white 1.png'; // Replace with your dark mode image
+    img.src="../../LOGO/new white 1.png"
 
   } else {
-    img.src = 'LOGO/new.png'; // Replace with your light mode image
+    img.src = "../../LOGO/new.png"; // Replace with your light mode image
 
   }
 }
@@ -22,11 +22,11 @@ function searchPage() {
 
   // Map of keywords to files (can include multiple keywords for each file)
   const fileMap = {
-    "MAIN//CONTACT US/contact us.html": ["about", "team", "company","email"],
-    "items/capacitor/capacitor.html": ["capacitors", "capacitor","fan capacitor"],
-    "items/doubledoor/double.html": ["singledoor", "door", "doubledoor"],
-    "items/off load changepover/changeover.html":["changeover","off load changeover","onload changeover"],
-    "items/mcb/mcb.html":["mcb","big mcb"]
+    "../MAIN//CONTACT US/contact us.html": ["about", "team", "company","email"],
+    "../items/capacitor/capacitor.html": ["capacitors", "capacitor","fan capacitor"],
+    "../items/doubledoor/double.html": ["singledoor", "door", "doubledoor"],
+    "../items/off load changepover/changeover.html":["changeover","off load changeover","onload changeover"],
+    "../items/mcb/mcb.html":["mcb","big mcb"]
   };
 
   // Try to find the one file that matches ALL keywords
@@ -53,7 +53,7 @@ function searchPage() {
 const clickimage = document.querySelector(".logoheader");
 clickimage.onclick = () => {
   console.log("harsg")
-  window.location.href ="index.html"
+  window.location.href ="../../index.html"
 }
 
 const dropdown=document.querySelector(".Dropdown");

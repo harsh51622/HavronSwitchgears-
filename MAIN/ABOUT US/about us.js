@@ -123,14 +123,4 @@
   // let autoplay = setInterval(()=> setActive((active+1) % details.length), 4000);
 
   // initialize
-  setActive(0, false, false);
 
-  // Optional: expose function to update data dynamically (if you want to replace text from server)
-  window.updateTimelineData = function(newDetails){
-    if(!Array.isArray(newDetails)) return;
-    // update details array and UI (minimal)
-    for(let i=0;i<Math.min(newDetails.length, details.length); i++){
-      details[i] = newDetails[i];
-    }
-    setActive(0);
-  };
